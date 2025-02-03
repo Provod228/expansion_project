@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with AI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .chat-container {
+            width: 400px;
+            margin: auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            position: relative; /* Для позиционирования кнопок */
+        }
+        .chat-box {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .message {
+            margin: 10px 0;
+        }
+        .user {
+            text-align: right;
+            color: blue;
+        }
+        .ai {
+            text-align: left;
+            color: green;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px; /* Отступ для кнопки */
+        }
+        button {
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .alert {
+            color: red;
+            margin-top: 10px;
+        }
+        .auth-buttons {
+            position: absolute; /* Позиционирование кнопок */
+            top: 10px;
+            right: 10px;
+        }
+        .send-button {
+            background-color: #25D366; /* Цвет кнопки отправки */
+            width: 50px; /* Ширина кнопки */
+            height: 50px; /* Высота кнопки */
+            border-radius: 50%; /* Круглая форма */
+            font-size: 20px; /* Размер шрифта */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <h1>Chat with AI</h1>
+        <div class="chat-box" id="chat-box">
+            {% for message in messages %}
+                <div class="message {% if message.user_message %}user{% else %}ai{% endif %}">
+                    {% if message.user_message %}{{ message.user_message }}{% else %}AI: {{ message.ai_response }}{% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        
+        <div class="auth-buttons">
+            {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}"><button>Login</button></a>
+                <a href="{% url 'register' %}"><button>Register</button></a>
+            {% endif %}
+        </div>
+
+        <input type="text" id="user-input" placeholder="Type a message..." />
+        <button class="send-button" id="send-button">➤</button> <!-- Кнопка отправки -->
+        
+        <div id="alert-message" class="alert" style="display: none;"></div>
+    </div>
+    <script>
+        document.getElementById('send-button').addEventListener('click', () => {
+            const userInput = document.getElementById('user-input').value;
+            const chatBox = document.getElementById('chat-box');
+            const alertMessage = document.getElementById('alert-message');
+
+            // Проверка, вошел ли пользователь в систему
+            const isAuthenticated = {{ user.is_authenticated|lower }};
+
+            if (!isAuthenticated) {
+                alertMessage.textContent = "You need to log in to send a message.";
+                alertMessage.style.display = 'block';
+                return;
+            }
+
+            // Скрыть сообщение об ошибке
+            alertMessage.style.display = 'none';
+
+            // Отображение сообщения пользователя
+            chatBox.innerHTML += `<div class="message user">${userInput}</div>`;
+            document.getElementById('user-input').value = ''; // Очистка поля ввода
+
+            // Отправка сообщения на сервер
+            fetch('/messages/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'  // Добавьте CSRF-токен
+                },
+                body: JSON.stringify({ user_message: userInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Отображение ответа ИИ
+                chatBox.innerHTML += `<div class="message ai">AI: ${data.ai_response}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight; // Прокрутка вниз
+            });
+        });
+    </script>
+</body>
+</html>
