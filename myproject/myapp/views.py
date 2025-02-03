@@ -5,32 +5,46 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import authenticate, login, logout
 from .serializers import UserRegistrationSerializer, UserLoginSerializer, MessageSerializer
 from .models import CustomUser, Chat, Message
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
+from .forms import CustomAuthenticationForm, CustomUserCreationForm
 
 
-class UserRegistrationView(generics.CreateAPIView):
-    queryset = CustomUser.objects.all()
-    serializer_class = UserRegistrationSerializer
-    permission_classes = [AllowAny]
+class UserRegistrationView(TemplateView):
+    template_name = 'register.html'  # Укажите ваш шаблон
 
-    def perform_create(self, serializer):
-        user = serializer.save()
-        Chat.objects.create(user=user)  # Создание чата для нового пользователя
-
-
-class UserLoginView(generics.GenericAPIView):
-    serializer_class = UserLoginSerializer
-    permission_classes = [AllowAny]
+    def get(self, request, *args, **kwargs):
+        form = CustomUserCreationForm()
+        return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
-        username = request.data.get('username')
-        password = request.data.get('password')
-        user = authenticate(username=username, password=password)
+        form = CustomUserCreationForm(data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            # Создание чата для нового пользователя
+            Chat.objects.create(user=user)
+            return redirect('login')  # Перенаправление на страницу входа
+        return render(request, self.template_name, {'form': form})
 
-        if user is not None:
-            login(request, user)
-            return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
-        return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+
+class UserLoginView(TemplateView):
+    template_name = 'login.html'  # Укажите ваш шаблон
+
+    def get(self, request, *args, **kwargs):
+        form = CustomAuthenticationForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = CustomAuthenticationForm(data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('chat_view')  # Перенаправление на страницу чата
+            else:
+                return render(request, self.template_name, {'form': form, 'error': 'Неверные учетные данные'})
+        return render(request, self.template_name, {'form': form})
 
 
 class ChatView(TemplateView):

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* Цвет фона, соответствующий чату */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 300px; /* Ширина контейнера */
+            text-align: center; /* Центрирование текста */
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333; /* Цвет заголовка */
+        }
+        .error-message {
+            color: red;
+            margin-bottom: 15px; /* Отступ для сообщения об ошибке */
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%; /* Полная ширина */
+            padding: 10px;
+            margin: 10px 0; /* Отступы сверху и снизу */
+            border: 1px solid #ccc; /* Цвет границы */
+            border-radius: 5px; /* Закругление углов */
+        }
+        button {
+            background-color: #007bff; /* Цвет кнопки */
+            color: white; /* Цвет текста кнопки */
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer; /* Указатель при наведении */
+            width: 100%; /* Полная ширина кнопки */
+        }
+        button:hover {
+            background-color: #0056b3; /* Цвет кнопки при наведении */
+        }
+        p {
+            margin-top: 15px; /* Отступ сверху для параграфа */
+        }
+        a {
+            color: #007bff; /* Цвет ссылки */
+            text-decoration: none; /* Убираем подчеркивание */
+        }
+        a:hover {
+            text-decoration: underline; /* Подчеркивание при наведении */
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Вход в систему</h2>
+        {% if error %}
+            <div class="error-message">{{ error }}</div> <!-- Сообщение об ошибке -->
+        {% endif %}
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div>
+                <label for="id_username">Имя пользователя:</label>
+                <input type="text" id="id_username" name="username" required>
+            </div>
+            <div>
+                <label for="id_password">Пароль:</label>
+                <input type="password" id="id_password" name="password" required>
+            </div>
+            <button type="submit">Войти</button>
+        </form>
+        <p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p> <!-- Кнопка для регистрации -->
+    </div>
+</body>
+</html> 

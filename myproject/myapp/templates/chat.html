@@ -76,11 +76,44 @@
             align-items: center;
             justify-content: center;
         }
+        .header {
+            display: flex;
+            justify-content: space-between; /* Выравнивание заголовка и имени пользователя */
+            align-items: center; /* Центрирование по вертикали */
+        }
+        .user-name {
+            color: gray; /* Цвет имени пользователя */
+        }
+        .logout-button {
+            margin-left: 10px;
+            color: red;
+            text-decoration: none;
+        }
+        .login-button {
+            margin-left: 10px;
+            color: blue;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
     <div class="chat-container">
-        <h1>Chat with AI</h1>
+        <div class="header">
+            <form method="post" action="{% if user.is_authenticated %}{% url 'logout' %}{% else %}{% url 'login' %}{% endif %}" style="display: inline;"> <!-- Одна форма для входа/выхода -->
+                {% csrf_token %}
+                <button class="auth-button" id="auth-button">
+                    {% if user.is_authenticated %}
+                        Выйти
+                    {% else %}
+                        Войти
+                    {% endif %}
+                </button>
+            </form>
+            <h1>Chat with AI</h1>
+            {% if user.is_authenticated %}
+                <div class="user-name">{{ user.username }}</div> <!-- Имя пользователя -->
+            {% endif %}
+        </div>
         <div class="chat-box" id="chat-box">
             {% for message in messages %}
                 <div class="message {% if message.user_message %}user{% else %}ai{% endif %}">
@@ -89,20 +122,10 @@
             {% endfor %}
         </div>
         
-        <div class="auth-buttons">
-            {% if user.is_authenticated %}
-                <form action="{% url 'logout' %}" method="post" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit">Logout</button>
-                </form>
-            {% else %}
-                <a href="{% url 'login' %}"><button>Login</button></a>
-                <a href="{% url 'register' %}"><button>Register</button></a>
-            {% endif %}
+        <div class="input-container" style="display: flex; align-items: center;"> <!-- Обертка для поля ввода и кнопки -->
+            <input type="text" id="user-input" placeholder="Type a message..." />
+            <button class="send-button" id="send-button">➤</button> <!-- Кнопка отправки -->
         </div>
-
-        <input type="text" id="user-input" placeholder="Type a message..." />
-        <button class="send-button" id="send-button">➤</button> <!-- Кнопка отправки -->
         
         <div id="alert-message" class="alert" style="display: none;"></div>
     </div>
