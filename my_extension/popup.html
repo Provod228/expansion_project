@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Django Extension</title>
+    <title>Chat with AI</title>
+    <script>
+        // Перенаправление на страницу чата
+        window.onload = function() {
+            window.open('http://localhost:8000/chat/', '_blank'); // Открывает страницу чата в новой вкладке
+        };
+    </script>
 </head>
 <body>
-    <h1>Hello from the extension!</h1>
-    <button id="fetch-data">Fetch Data</button>
-    <div id="data"></div>
-    <script src="popup.js"></script>
+    <h1>Loading...</h1>
 </body>
 </html>

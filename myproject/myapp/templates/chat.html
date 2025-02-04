@@ -94,6 +94,18 @@
             color: blue;
             text-decoration: none;
         }
+        #chat-container {
+            display: none; /* Скрыто по умолчанию */
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: white;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+            z-index: 1000;
+            overflow-y: auto; /* Прокрутка, если сообщений много */
+        }
     </style>
 </head>
 <body>
@@ -128,6 +140,16 @@
         </div>
         
         <div id="alert-message" class="alert" style="display: none;"></div>
+    </div>
+    <div id="chat-container" style="display: none; position: fixed; top: 0; right: 0; width: 50%; height: 100%; background: white; box-shadow: -2px 0 5px rgba(0,0,0,0.5); z-index: 1000; overflow-y: auto;">
+        <div class="chat-box" id="chat-box">
+            <!-- Сообщения будут отображаться здесь -->
+        </div>
+        <div class="input-container" style="display: flex; align-items: center;">
+            <input type="text" id="user-input" placeholder="Type a message..." />
+            <button class="send-button" id="send-button">➤</button>
+        </div>
+        <button id="fullscreen-button">Fullscreen</button>
     </div>
     <script>
         document.getElementById('send-button').addEventListener('click', () => {
@@ -166,6 +188,19 @@
                 chatBox.innerHTML += `<div class="message ai">AI: ${data.ai_response}</div>`;
                 chatBox.scrollTop = chatBox.scrollHeight; // Прокрутка вниз
             });
+        });
+
+        document.getElementById('fullscreen-button').addEventListener('click', () => {
+            const chatContainer = document.getElementById('chat-container');
+            if (chatContainer.requestFullscreen) {
+                chatContainer.requestFullscreen();
+            } else if (chatContainer.mozRequestFullScreen) { // Firefox
+                chatContainer.mozRequestFullScreen();
+            } else if (chatContainer.webkitRequestFullscreen) { // Chrome, Safari и Opera
+                chatContainer.webkitRequestFullscreen();
+            } else if (chatContainer.msRequestFullscreen) { // IE/Edge
+                chatContainer.msRequestFullscreen();
+            }
         });
     </script>
 </body>
