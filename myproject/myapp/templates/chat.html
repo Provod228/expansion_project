@@ -153,13 +153,13 @@
     </div>
     <script>
         document.getElementById('send-button').addEventListener('click', () => {
-            const userInput = document.getElementById('user-input').value;
+            const userInput = document.getElementById('user-input').value.trim(); // Убираем пробелы
             const chatBox = document.getElementById('chat-box');
             const alertMessage = document.getElementById('alert-message');
+            const chatId = '{{ chat.id }}'; // Получаем chat_id из контекста
 
             // Проверка, вошел ли пользователь в систему
             const isAuthenticated = {{ user.is_authenticated|lower }};
-
             if (!isAuthenticated) {
                 alertMessage.textContent = "You need to log in to send a message.";
                 alertMessage.style.display = 'block';
@@ -168,6 +168,13 @@
 
             // Скрыть сообщение об ошибке
             alertMessage.style.display = 'none';
+
+            // Проверка на пустую строку
+            if (userInput === '') {
+                alertMessage.textContent = 'Please enter a message.'; // Сообщение об ошибке
+                alertMessage.style.display = 'block'; // Показываем сообщение об ошибке
+                return; // Прерываем выполнение
+            }
 
             // Отображение сообщения пользователя
             chatBox.innerHTML += `<div class="message user">${userInput}</div>`;
@@ -178,15 +185,21 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'  // Добавьте CSRF-токен
+                    'X-CSRFToken': '{{ csrf_token }}'
                 },
-                body: JSON.stringify({ user_message: userInput })
+                body: JSON.stringify({ 
+                    user_message: userInput,
+                    chat_id: chatId // Отправляем chat_id
+                })
             })
             .then(response => response.json())
             .then(data => {
                 // Отображение ответа ИИ
                 chatBox.innerHTML += `<div class="message ai">AI: ${data.ai_response}</div>`;
                 chatBox.scrollTop = chatBox.scrollHeight; // Прокрутка вниз
+            })
+            .catch(error => {
+                console.error('Error:', error);
             });
         });
 
