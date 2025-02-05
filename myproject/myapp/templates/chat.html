@@ -111,7 +111,7 @@
 <body>
     <div class="chat-container">
         <div class="header">
-            <form method="post" action="{% if user.is_authenticated %}{% url 'logout' %}{% else %}{% url 'login' %}{% endif %}" style="display: inline;"> <!-- Одна форма для входа/выхода -->
+            <form method="post" action="{% if user.is_authenticated %}{% url 'logout' %}{% else %}{% url 'login' %}{% endif %}" style="display: inline;">
                 {% csrf_token %}
                 <button class="auth-button" id="auth-button">
                     {% if user.is_authenticated %}
@@ -123,37 +123,43 @@
             </form>
             <h1>Chat with AI</h1>
             {% if user.is_authenticated %}
-                <div class="user-name">{{ user.username }}</div> <!-- Имя пользователя -->
+                <div class="user-name">{{ user.username }}</div>
             {% endif %}
         </div>
+        
         <div class="chat-box" id="chat-box">
-            {% for message in messages %}
-                <div class="message {% if message.user_message %}user{% else %}ai{% endif %}">
-                    {% if message.user_message %}{{ message.user_message }}{% else %}AI: {{ message.ai_response }}{% endif %}
-                </div>
-            {% endfor %}
+            <div class="message">Здесь будет ваш чат с AI. Пожалуйста, введите сообщение.</div>
         </div>
         
-        <div class="input-container" style="display: flex; align-items: center;"> <!-- Обертка для поля ввода и кнопки -->
-            <input type="text" id="user-input" placeholder="Type a message..." />
-            <button class="send-button" id="send-button">➤</button> <!-- Кнопка отправки -->
-        </div>
-        
-        <div id="alert-message" class="alert" style="display: none;"></div>
-    </div>
-    <div id="chat-container" style="display: none; position: fixed; top: 0; right: 0; width: 50%; height: 100%; background: white; box-shadow: -2px 0 5px rgba(0,0,0,0.5); z-index: 1000; overflow-y: auto;">
-        <div class="chat-box" id="chat-box">
-            <!-- Сообщения будут отображаться здесь -->
-        </div>
         <div class="input-container" style="display: flex; align-items: center;">
             <input type="text" id="user-input" placeholder="Type a message..." />
             <button class="send-button" id="send-button">➤</button>
         </div>
-        <button id="fullscreen-button">Fullscreen</button>
+        
+        <div id="alert-message" class="alert" style="display: none;"></div>
+        
+        <!-- Кнопка для отображения истории -->
+        <button id="history-button">Показать историю</button>
+        
+        <!-- Блок для отображения истории сообщений -->
+        <div id="history-container" style="display: none;">
+            <h2>История сообщений</h2>
+            <div class="chat-box" id="history-box">
+                {% for message in messages %}
+                    <div class="message user">
+                        {{ message.user_message }}
+                    </div>
+                    <div class="message ai">
+                        AI: {{ message.ai_response }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
+
     <script>
         document.getElementById('send-button').addEventListener('click', () => {
-            const userInput = document.getElementById('user-input').value.trim(); // Убираем пробелы
+            const userInput = document.getElementById('user-input').value.trim();
             const chatBox = document.getElementById('chat-box');
             const alertMessage = document.getElementById('alert-message');
             const chatId = '{{ chat.id }}'; // Получаем chat_id из контекста
@@ -171,14 +177,14 @@
 
             // Проверка на пустую строку
             if (userInput === '') {
-                alertMessage.textContent = 'Please enter a message.'; // Сообщение об ошибке
-                alertMessage.style.display = 'block'; // Показываем сообщение об ошибке
-                return; // Прерываем выполнение
+                alertMessage.textContent = 'Please enter a message.';
+                alertMessage.style.display = 'block';
+                return;
             }
 
             // Отображение сообщения пользователя
             chatBox.innerHTML += `<div class="message user">${userInput}</div>`;
-            document.getElementById('user-input').value = ''; // Очистка поля ввода
+            document.getElementById('user-input').value = '';
 
             // Отправка сообщения на сервер
             fetch('/messages/', {
@@ -189,7 +195,7 @@
                 },
                 body: JSON.stringify({ 
                     user_message: userInput,
-                    chat_id: chatId // Отправляем chat_id
+                    chat_id: chatId
                 })
             })
             .then(response => response.json())
@@ -203,16 +209,12 @@
             });
         });
 
-        document.getElementById('fullscreen-button').addEventListener('click', () => {
-            const chatContainer = document.getElementById('chat-container');
-            if (chatContainer.requestFullscreen) {
-                chatContainer.requestFullscreen();
-            } else if (chatContainer.mozRequestFullScreen) { // Firefox
-                chatContainer.mozRequestFullScreen();
-            } else if (chatContainer.webkitRequestFullscreen) { // Chrome, Safari и Opera
-                chatContainer.webkitRequestFullscreen();
-            } else if (chatContainer.msRequestFullscreen) { // IE/Edge
-                chatContainer.msRequestFullscreen();
+        document.getElementById('history-button').addEventListener('click', () => {
+            const historyContainer = document.getElementById('history-container');
+            if (historyContainer.style.display === 'none') {
+                historyContainer.style.display = 'block'; // Показываем историю
+            } else {
+                historyContainer.style.display = 'none'; // Скрываем историю
             }
         });
     </script>

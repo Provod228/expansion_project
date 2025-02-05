@@ -50,25 +50,51 @@ class UserLoginView(TemplateView):
 class ChatView(TemplateView):
     template_name = 'chat.html'  # Укажите ваш шаблон
 
+    def dispatch(self, request, *args, **kwargs):
+        # Проверка, вошел ли пользователь в систему
+        if not request.user.is_authenticated:
+            return redirect('login')  # Перенаправление на страницу входа
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['messages'] = Message.objects.all()  # Получаем все сообщения
+        chat = Chat.objects.filter(user=self.request.user).first()  # Получаем чат для текущего пользователя
+        context['chat'] = chat  # Передаем чат в контекст
+        context['messages'] = Message.objects.filter(chat=chat)  # Получаем сообщения для чата
         return context
-
-
-class MessageCreateView(generics.CreateAPIView):
-    serializer_class = MessageSerializer
-    permission_classes = [IsAuthenticated]  # Только авторизованные пользователи могут отправлять сообщения
-
-    def perform_create(self, serializer):
-        user_message = serializer.validated_data['user_message']
-        ai_response = self.get_ai_response(user_message)
-        serializer.save(chat=self.request.user.chat, ai_response=ai_response)
-
-    def get_ai_response(self, user_message):
-        return f"AI response to: {user_message}"  # Пример ответа
 
 
 def logout_view(request):
     logout(request)
     return redirect('chat_view')  # Перенаправление на страницу чата после выхода
+
+
+class MessageCreateView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        print(request.data)  # Выводим данные запроса в консоль
+        user_message = request.data.get('user_message')
+        chat_id = request.data.get('chat_id')
+
+        if not user_message or not chat_id:
+            return Response({'error': 'user_message and chat_id are required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Имитация ответа ИИ
+        ai_response = self.get_ai_response(user_message)
+
+        # Сохранение сообщения в базе данных
+        message = Message.objects.create(
+            chat_id=chat_id,
+            user_message=user_message,
+            ai_response=ai_response
+        )
+
+        return Response({
+            'user_message': user_message,
+            'ai_response': ai_response,
+            'message_id': message.id
+        }, status=201)
+
+    def get_ai_response(self, user_message):
+        return f"AI response to: {user_message}"  # Пример ответа
