@@ -101,13 +101,13 @@ class MessageCreateView(generics.CreateAPIView):
     def get_ai_response(self, user_message):
         client = OpenAI(
             base_url="https://openrouter.ai/api/v1",
-            api_key="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",  # Замените на ваш токен
+            api_key="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",  # Ваш токен
         )
 
         completion = client.chat.completions.create(
             extra_headers={
-                "HTTP-Referer": "http://localhost:8000/chat/",  # Замените на ваш URL сайта
-                "X-Title": "MySite",  # Замените на название вашего сайта
+                "HTTP-Referer": "https://yourwebsite.com",  # Замените на ваш URL сайта
+                "X-Title": "Your Site Name",  # Замените на название вашего сайта
             },
             model="qwen/qwen-vl-plus:free",
             messages=[
@@ -123,5 +123,4 @@ class MessageCreateView(generics.CreateAPIView):
             ]
         )
 
-        print(completion.choices[0].message.content)
-        return completion.choices[0].message.content
+        return completion.choices[0].message.content  # Возвращаем ответ от ИИ
