@@ -7,6 +7,8 @@ from .serializers import UserRegistrationSerializer, UserLoginSerializer, Messag
 from .models import CustomUser, Chat, Message
 from django.shortcuts import redirect, render
 from .forms import CustomAuthenticationForm, CustomUserCreationForm
+import requests  # Импортируем библиотеку для работы с HTTP-запросами
+from openai import OpenAI
 
 
 class UserRegistrationView(TemplateView):
@@ -94,7 +96,32 @@ class MessageCreateView(generics.CreateAPIView):
             'user_message': user_message,
             'ai_response': ai_response,
             'message_id': message.id
-        }, status=201)
+        }, status=status.HTTP_201_CREATED)
 
     def get_ai_response(self, user_message):
-        return f"AI response to: {user_message}"  # Пример ответа
+        client = OpenAI(
+            base_url="https://openrouter.ai/api/v1",
+            api_key="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",  # Замените на ваш токен
+        )
+
+        completion = client.chat.completions.create(
+            extra_headers={
+                "HTTP-Referer": "http://localhost:8000/chat/",  # Замените на ваш URL сайта
+                "X-Title": "MySite",  # Замените на название вашего сайта
+            },
+            model="qwen/qwen-vl-plus:free",
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": user_message
+                        }
+                    ]
+                }
+            ]
+        )
+
+        print(completion.choices[0].message.content)
+        return completion.choices[0].message.content
