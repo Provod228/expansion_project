@@ -1,0 +1,16 @@
+/* main_project/myproject/myapp/stiles/CSS/dark-theme.css */
+body {
+    background-color: #333; /* Темный фон */
+    color: #f0f0f0; /* Светлый текст */
+}
+
+a {
+    color: #66b3ff; /* Светлый цвет ссылок */
+    text-decoration: none; /* Убираем подчеркивание */
+}
+
+a:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+/* Добавьте другие стили для темной темы по необходимости */

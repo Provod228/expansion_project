@@ -1,0 +1,16 @@
+/* main_project/myproject/myapp/stiles/CSS/light-theme.css */
+body {
+    background-color: #f0f0f0; /* Светлый фон */
+    color: #333; /* Темный текст */
+}
+
+a {
+    color: #007bff; /* Цвет ссылок */
+    text-decoration: none; /* Убираем подчеркивание */
+}
+
+a:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+/* Добавьте другие стили для светлой темы по необходимости */
