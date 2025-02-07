@@ -7,7 +7,6 @@ from .serializers import UserRegistrationSerializer, UserLoginSerializer, Messag
 from .models import CustomUser, Chat, Message
 from django.shortcuts import redirect, render
 from .forms import CustomAuthenticationForm, CustomUserCreationForm
-import requests  # Импортируем библиотеку для работы с HTTP-запросами
 from openai import OpenAI
 
 
@@ -101,7 +100,7 @@ class MessageCreateView(generics.CreateAPIView):
     def get_ai_response(self, user_message):
         client = OpenAI(
             base_url="https://openrouter.ai/api/v1",
-            api_key="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",  # Ваш токен
+            api_key="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",  # Ваш токен
         )
 
         completion = client.chat.completions.create(
