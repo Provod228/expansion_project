@@ -1,112 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat with AI</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        .chat-container {
-            width: 400px;
-            margin: auto;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            position: relative; /* Для позиционирования кнопок */
-        }
-        .chat-box {
-            height: 300px;
-            overflow-y: auto;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        .message {
-            margin: 10px 0;
-        }
-        .user {
-            text-align: right;
-            color: blue;
-        }
-        .ai {
-            text-align: left;
-            color: green;
-        }
-        input[type="text"] {
-            width: calc(100% - 22px);
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-right: 10px; /* Отступ для кнопки */
-        }
-        button {
-            padding: 10px;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .alert {
-            color: red;
-            margin-top: 10px;
-        }
-        .auth-buttons {
-            position: absolute; /* Позиционирование кнопок */
-            top: 10px;
-            right: 10px;
-        }
-        .send-button {
-            background-color: #25D366; /* Цвет кнопки отправки */
-            width: 50px; /* Ширина кнопки */
-            height: 50px; /* Высота кнопки */
-            border-radius: 50%; /* Круглая форма */
-            font-size: 20px; /* Размер шрифта */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between; /* Выравнивание заголовка и имени пользователя */
-            align-items: center; /* Центрирование по вертикали */
-        }
-        .user-name {
-            color: gray; /* Цвет имени пользователя */
-        }
-        .logout-button {
-            margin-left: 10px;
-            color: red;
-            text-decoration: none;
-        }
-        .login-button {
-            margin-left: 10px;
-            color: blue;
-            text-decoration: none;
-        }
-        #chat-container {
-            display: none; /* Скрыто по умолчанию */
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 50%;
-            height: 100%;
-            background: white;
-            box-shadow: -2px 0 5px rgba(0,0,0,0.5);
-            z-index: 1000;
-            overflow-y: auto; /* Прокрутка, если сообщений много */
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'CSS/chat.css' %}">
+    <!-- Добавьте другие CSS файлы по мере необходимости -->
 </head>
 <body>
     <div class="chat-container">
@@ -125,10 +25,15 @@
             {% if user.is_authenticated %}
                 <div class="user-name">{{ user.username }}</div>
             {% endif %}
+            <button id="theme-toggle" class="theme-toggle-button">
+                <span id="theme-icon" class="icon">🌙</span>
+            </button>
         </div>
         
         <div class="chat-box" id="chat-box">
-            <div class="message">Здесь будет ваш чат с AI. Пожалуйста, введите сообщение.</div>
+            <div class="message-container ai">
+                <div class="message">AI: Привет! Как я могу помочь вам сегодня?</div>
+            </div>
         </div>
         
         <div class="input-container" style="display: flex; align-items: center;">
@@ -138,19 +43,17 @@
         
         <div id="alert-message" class="alert" style="display: none;"></div>
         
-        <!-- Кнопка для отображения истории -->
         <button id="history-button">Показать историю</button>
         
-        <!-- Блок для отображения истории сообщений -->
         <div id="history-container" style="display: none;">
             <h2>История сообщений</h2>
             <div class="chat-box" id="history-box">
                 {% for message in messages|dictsort:"created_at" reversed %}
-                    <div class="message user">
-                        {{ message.user_message }}
+                    <div class="message-container user">
+                        <div class="message">{{ message.user_message }}</div>
                     </div>
-                    <div class="message ai">
-                        AI: {{ message.ai_response }}
+                    <div class="message-container ai">
+                        <div class="message">AI: {{ message.ai_response  }}</div>
                     </div>
                 {% endfor %}
             </div>
@@ -159,7 +62,6 @@
 
     <script>
         document.getElementById('send-button').addEventListener('click', sendMessage);
-
         document.getElementById('user-input').addEventListener('keypress', (event) => {
             if (event.key === 'Enter') {
                 sendMessage();
@@ -170,9 +72,8 @@
             const userInput = document.getElementById('user-input').value.trim();
             const chatBox = document.getElementById('chat-box');
             const alertMessage = document.getElementById('alert-message');
-            const chatId = '{{ chat.id }}'; // Получаем chat_id из контекста
+            const chatId = '{{ chat.id }}';
 
-            // Проверка, вошел ли пользователь в систему
             const isAuthenticated = {{ user.is_authenticated|lower }};
             if (!isAuthenticated) {
                 alertMessage.textContent = "You need to log in to send a message.";
@@ -180,21 +81,17 @@
                 return;
             }
 
-            // Скрыть сообщение об ошибке
             alertMessage.style.display = 'none';
 
-            // Проверка на пустую строку
             if (userInput === '') {
                 alertMessage.textContent = 'Please enter a message.';
                 alertMessage.style.display = 'block';
                 return;
             }
 
-            // Отображение сообщения пользователя
-            chatBox.innerHTML += `<div class="message user">${userInput}</div>`;
+            chatBox.innerHTML += `<div class="message-container user"><div class="message">${userInput}</div></div>`;
             document.getElementById('user-input').value = '';
 
-            // Отправка сообщения на сервер
             fetch('/messages/', {
                 method: 'POST',
                 headers: {
@@ -208,9 +105,8 @@
             })
             .then(response => response.json())
             .then(data => {
-                // Отображение ответа ИИ
-                chatBox.innerHTML += `<div class="message ai">AI: ${data.ai_response}</div>`;
-                chatBox.scrollTop = chatBox.scrollHeight; // Прокрутка вниз
+                chatBox.innerHTML += `<div class="message-container ai"><div class="message">AI: ${data.ai_response}</div></div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -220,9 +116,22 @@
         document.getElementById('history-button').addEventListener('click', () => {
             const historyContainer = document.getElementById('history-container');
             if (historyContainer.style.display === 'none') {
-                historyContainer.style.display = 'block'; // Показываем историю
+                historyContainer.style.display = 'block';
             } else {
-                historyContainer.style.display = 'none'; // Скрываем историю
+                historyContainer.style.display = 'none';
+            }
+        });
+
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            
+            if (document.body.classList.contains('dark-theme')) {
+                themeIcon.textContent = '☀️';
+            } else {
+                themeIcon.textContent = '🌙';
             }
         });
     </script>

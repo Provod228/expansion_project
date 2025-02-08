@@ -1,0 +1,79 @@
+/* Общие стили */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s, color 0.3s; /* Плавный переход */
+}
+
+/* Светлая тема */
+body {
+    background-color: #f0f0f0; /* Светлый фон */
+    color: #333; /* Темный текст */
+}
+
+.register-container {
+    padding: 20px;
+    max-width: 400px;
+    margin: auto;
+    background-color: #ffffff; /* Белый фон для контейнера */
+    border-radius: 8px; /* Закругленные углы */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень */
+}
+
+/* Темная тема */
+.dark-theme {
+    background-color: #121212; /* Темный фон */
+    color: #ffffff; /* Светлый текст */
+}
+
+.dark-theme .register-container {
+    background-color: #1e1e1e; /* Темный фон для контейнера */
+    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1); /* Легкая тень для темной темы */
+}
+
+/* Стили для кнопок */
+button {
+    background-color: #007bff; /* Синий фон */
+    color: white; /* Белый текст */
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px; /* Закругленные углы */
+    transition: background-color 0.3s; /* Плавный переход */
+}
+
+button:hover {
+    background-color: #0056b3; /* Темный синий при наведении */
+}
+
+/* Стили для сообщений об ошибках */
+.error-message {
+    color: red;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #333; /* Цвет заголовка */
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+    width: 100%; /* Полная ширина */
+    padding: 10px;
+    margin: 10px 0; /* Отступы сверху и снизу */
+    border: 1px solid #ccc; /* Цвет границы */
+    border-radius: 5px; /* Закругление углов */
+}
+
+p {
+    margin-top: 15px; /* Отступ сверху для параграфа */
+}
+
+a {
+    color: #007bff; /* Цвет ссылки */
+    text-decoration: none; /* Убираем подчеркивание */
+}
+
+a:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+} 

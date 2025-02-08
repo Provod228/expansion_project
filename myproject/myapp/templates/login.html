@@ -1,65 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вход</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0; /* Цвет фона, соответствующий чату */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .login-container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            width: 300px; /* Ширина контейнера */
-            text-align: center; /* Центрирование текста */
-        }
-        h2 {
-            margin-bottom: 20px;
-            color: #333; /* Цвет заголовка */
-        }
-        .error-message {
-            color: red;
-            margin-bottom: 15px; /* Отступ для сообщения об ошибке */
-        }
-        input[type="text"], input[type="password"] {
-            width: 100%; /* Полная ширина */
-            padding: 10px;
-            margin: 10px 0; /* Отступы сверху и снизу */
-            border: 1px solid #ccc; /* Цвет границы */
-            border-radius: 5px; /* Закругление углов */
-        }
-        button {
-            background-color: #007bff; /* Цвет кнопки */
-            color: white; /* Цвет текста кнопки */
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer; /* Указатель при наведении */
-            width: 100%; /* Полная ширина кнопки */
-        }
-        button:hover {
-            background-color: #0056b3; /* Цвет кнопки при наведении */
-        }
-        p {
-            margin-top: 15px; /* Отступ сверху для параграфа */
-        }
-        a {
-            color: #007bff; /* Цвет ссылки */
-            text-decoration: none; /* Убираем подчеркивание */
-        }
-        a:hover {
-            text-decoration: underline; /* Подчеркивание при наведении */
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'CSS/login.css' %}"> <!-- Подключаем стили -->
 </head>
 <body>
     <div class="login-container">
@@ -80,6 +26,14 @@
             <button type="submit">Войти</button>
         </form>
         <p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p> <!-- Кнопка для регистрации -->
+        <button id="theme-toggle">Переключить тему</button> <!-- Кнопка переключения темы -->
     </div>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+        });
+    </script>
 </body>
 </html> 

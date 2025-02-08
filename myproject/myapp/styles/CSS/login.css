@@ -1,0 +1,70 @@
+/* Общие стили */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Светлая тема */
+body {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.login-container {
+    padding: 20px;
+}
+
+/* Темная тема */
+.dark-theme {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+.dark-theme .login-container {
+    background-color: #1e1e1e;
+}
+
+/* Стили для кнопок */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+button:hover { 
+    background-color: #0056b3;
+}
+
+/* Стили для сообщений об ошибках */
+.error-message {
+    color: red;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #333; /* Цвет заголовка */
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%; /* Полная ширина */
+    padding: 10px;
+    margin: 10px 0; /* Отступы сверху и снизу */
+    border: 1px solid #ccc; /* Цвет границы */
+    border-radius: 5px; /* Закругление углов */
+}
+
+p {
+    margin-top: 15px; /* Отступ сверху для параграфа */
+}
+
+a {
+    color: #007bff; /* Цвет ссылки */
+    text-decoration: none; /* Убираем подчеркивание */
+}
+
+a:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+} 
