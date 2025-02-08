@@ -46,19 +46,40 @@ body {
 
 /* Контейнер для сообщений */
 .message-container {
-    display: flex; /* Используем Flexbox */
-    justify-content: space-between; /* Распределяем пространство между элементами */
-    margin: 10px 0; /* Отступы между сообщениями */
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
 }
 
-/* Стили для сообщений */
+/* Стили для сообщений AI */
+.message-container.ai .message {
+    background-color: #e0e0e0; /* Светло-серый фон для AI сообщений в светлой теме */
+    color: #000000; /* Темный текст */
+}
+
+/* Темная тема для сообщений AI */
+.dark-theme .message-container.ai .message {
+    background-color: #444; /* Более светлый фон для AI сообщений в темной теме */
+    color: #e0e0e0; /* Темный текст */
+}
+
+/* Стили для сообщений пользователя */
+.message-container.user .message {
+    background-color: #5facfa; /* Синий фон для пользовательских сообщений */
+    color: #ffffff; /* Светлый текст */
+}
+
+/* Темная тема для сообщений пользователя */
+.dark-theme .message-container.user .message {
+    background-color: #003d7a; /* Более темный синий фон для пользовательских сообщений в темной теме */
+}
+
+/* Остальные стили */
 .message {
-    background-color: #f1f1f1; /* Серый фон для сообщений */
-    border-radius: 5px; /* Закругленные углы */
-    padding: 5px 10px; /* Отступы внутри сообщения */
-    font-family: 'Verdana', sans-serif; /* Измените на желаемый шрифт для сообщений */
-    display: inline-block; /* Занимает только необходимое пространство */
+    border-radius: 5px;
+    padding: 10px;
     max-width: 70%; /* Максимальная ширина сообщения */
+    display: inline-block;
 }
 
 /* Стили для ответов AI */

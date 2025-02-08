@@ -9,7 +9,12 @@
 </head>
 <body>
     <div class="register-container">
-        <h2>Регистрация</h2>
+        <div class="header">
+            <h1 style="display: inline;">Регистрация</h1>
+            <button id="theme-toggle" class="theme-toggle-button" style="margin-left: 10px;">
+                <span id="theme-icon" class="icon">🌙</span>
+            </button>
+        </div>
         {% if form.errors %}
             <div class="error-message">{{ form.errors }}</div>
         {% endif %}
@@ -34,14 +39,40 @@
             <button type="submit">Зарегистрироваться</button>
         </form>
         <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
-        <button id="theme-toggle">Переключить тему</button>
     </div>
 
     <script>
-        const themeToggle = document.getElementById('theme-toggle');
-        themeToggle.addEventListener('click', () => {
+        // Функция для переключения темы
+        function toggleTheme() {
             document.body.classList.toggle('dark-theme');
-        });
+            const themeIcon = document.getElementById('theme-icon');
+            
+            // Сохранение темы в localStorage
+            if (document.body.classList.contains('dark-theme')) {
+                themeIcon.textContent = '☀️'; // Иконка для светлой темы
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.textContent = '🌙'; // Иконка для темной темы
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Проверка сохраненной темы при загрузке страницы
+        window.onload = function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                document.getElementById('theme-icon').textContent = '☀️'; // Иконка для светлой темы
+            } else {
+                document.getElementById('theme-icon').textContent = '🌙'; // Иконка для темной темы
+            }
+
+            // Добавление обработчика события для кнопки переключения темы
+            const themeToggle = document.getElementById('theme-toggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', toggleTheme);
+            }
+        };
     </script>
 </body>
 </html> 
