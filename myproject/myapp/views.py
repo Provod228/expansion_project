@@ -51,17 +51,17 @@ class UserLoginView(TemplateView):
 class ChatView(TemplateView):
     template_name = 'chat.html'  # Укажите ваш шаблон
 
-    def dispatch(self, request, *args, **kwargs):
-        # Проверка, вошел ли пользователь в систему
-        if not request.user.is_authenticated:
-            return redirect('login')  # Перенаправление на страницу входа
-        return super().dispatch(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        chat = Chat.objects.filter(user=self.request.user).first()  # Получаем чат для текущего пользователя
-        context['chat'] = chat  # Передаем чат в контекст
-        context['messages'] = Message.objects.filter(chat=chat)  # Получаем сообщения для чата
+        
+        if self.request.user.is_authenticated:
+            chat = Chat.objects.filter(user=self.request.user).first()  # Получаем чат для текущего пользователя
+            context['chat'] = chat  # Передаем чат в контекст
+            context['messages'] = Message.objects.filter(chat=chat) if chat else []  # Получаем сообщения для чата, если чат существует
+        else:
+            context['chat'] = None  # Не передаем чат, если пользователь не аутентифицирован
+            context['messages'] = []  # Пустой список сообщений
+
         return context
 
 

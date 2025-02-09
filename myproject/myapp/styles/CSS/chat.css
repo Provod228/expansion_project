@@ -165,6 +165,7 @@ button:hover {
 
 .user-name {
     color: gray; /* Цвет имени пользователя */
+    margin-right: 10px; /* Отступ справа от имени пользователя */
 }
 
 .logout-button {
@@ -258,4 +259,31 @@ input[type="text"] {
     background-color: #333; /* Темный фон для текстового поля */
     color: #ffffff; /* Светлый текст */
     border: 1px solid #555; /* Темная граница */
+}
+
+/* Пример стилей для кнопок */
+.auth-button {
+    background-color: #007bff; /* Цвет фона */
+    color: white; /* Цвет текста */
+    border: none; /* Без границы */
+    padding: 10px 15px; /* Отступы */
+    border-radius: 5px; /* Закругленные углы */
+    cursor: pointer; /* Указатель при наведении */
+    font-size: 16px; /* Размер шрифта */
+}
+
+.auth-button:hover {
+    background-color: #0056b3; /* Цвет фона при наведении */
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between; /* Разделяет элементы по краям */
+    align-items: center; /* Выравнивание по вертикали */
+    margin-top: 10px; /* Отступ сверху */
+}
+
+#history-button {
+    margin-left: 10px; /* Отступ слева для кнопки */
+    margin-bottom: 10px; /* Отступ снизу для кнопки */
 }

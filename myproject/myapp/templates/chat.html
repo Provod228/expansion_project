@@ -11,23 +11,23 @@
 <body>
     <div class="chat-container">
         <div class="header">
-            <form method="post" action="{% if user.is_authenticated %}{% url 'logout' %}{% else %}{% url 'login' %}{% endif %}" style="display: inline;">
-                {% csrf_token %}
-                <button class="auth-button" id="auth-button">
-                    {% if user.is_authenticated %}
-                        Выйти
-                    {% else %}
-                        Войти
-                    {% endif %}
-                </button>
-            </form>
+            <button class="auth-button" id="logout-button" style="display: {% if user.is_authenticated %} inline {% else %} none {% endif %};">
+                Выйти
+            </button>
+            <button class="auth-button" id="login-button" style="display: {% if user.is_authenticated %} none {% else %} inline {% endif %};">
+                Войти
+            </button>
             <h1>Chat with AI</h1>
-            {% if user.is_authenticated %}
-                <div class="user-name">{{ user.username }}</div>
-            {% endif %}
-            <button id="theme-toggle" class="theme-toggle-button">
+            <button id="theme-toggle" class="theme-toggle-button" style="margin-left: 10px;">
                 <span id="theme-icon" class="icon">🌙</span>
             </button>
+        </div>
+
+        <div class="user-info" style="display: flex; justify-content: space-between; align-items: center;">
+            {% if user.is_authenticated %}
+                <div class="user-name">Привет, {{ user.username }}</div>
+            {% endif %}
+            <button id="history-button" style="display: {% if user.is_authenticated %} inline {% else %} none {% endif %};">Показать историю</button>
         </div>
         
         <div class="chat-box" id="chat-box">
@@ -42,8 +42,7 @@
         </div>
         
         <div id="alert-message" class="alert" style="display: none;"></div>
-        
-        <button id="history-button">Показать историю</button>
+
         
         <div id="history-container" style="display: none;">
             <h2>История сообщений</h2>
@@ -61,6 +60,25 @@
     </div>
 
     <script>
+        // Обработчик для кнопки выхода
+        document.getElementById('logout-button').addEventListener('click', function() {
+            fetch('{% url "logout" %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Перезагрузить страницу или обновить интерфейс
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+        });
+
         // Функция для переключения темы
         function toggleTheme() {
             document.body.classList.toggle('dark-theme');
@@ -108,7 +126,7 @@
 
             const isAuthenticated = {{ user.is_authenticated|lower }};
             if (!isAuthenticated) {
-                alertMessage.textContent = "You need to log in to send a message.";
+                alertMessage.textContent = "Вы должны войти в систему, чтобы отправить сообщение.";
                 alertMessage.style.display = 'block';
                 return;
             }
@@ -116,7 +134,7 @@
             alertMessage.style.display = 'none';
 
             if (userInput === '') {
-                alertMessage.textContent = 'Please enter a message.';
+                alertMessage.textContent = 'Пожалуйста, введите сообщение.';
                 alertMessage.style.display = 'block';
                 return;
             }
@@ -152,6 +170,10 @@
             } else {
                 historyContainer.style.display = 'none';
             }
+        });
+
+        document.getElementById('login-button').addEventListener('click', function() {
+            window.location.href = "{% url 'login' %}";  // Перенаправление на страницу входа
         });
     </script>
 </body>
