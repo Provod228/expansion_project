@@ -3,7 +3,9 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    transition: background-color 0.3s, color 0.3s; /* Плавный переход */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Плавный переход */
+    background-color: #f0f0f0; /* Светлый фон */
+    color: #333; /* Темный текст */
 }
 
 /* Светлая тема */
@@ -53,14 +55,14 @@ body {
 
 /* Стили для сообщений AI */
 .message-container.ai .message {
-    background-color: #e0e0e0; /* Светло-серый фон для AI сообщений в светлой теме */
+    background-color: #e0e0e0; /* Светло-серый фон для AI сообщений */
     color: #000000; /* Темный текст */
 }
 
 /* Темная тема для сообщений AI */
 .dark-theme .message-container.ai .message {
     background-color: #444; /* Более светлый фон для AI сообщений в темной теме */
-    color: #e0e0e0; /* Темный текст */
+    color: #e0e0e0; /* Светлый текст */
 }
 
 /* Стили для сообщений пользователя */
@@ -100,7 +102,7 @@ body {
 input[type="text"] {
     width: calc(100% - 20px);
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #ccc; /* Светлая тема */
     border-radius: 5px;
     margin-right: 10px;
 }

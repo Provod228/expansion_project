@@ -138,3 +138,11 @@ AUTH_USER_MODEL = 'myapp.CustomUser'
 
 LOGIN_URL = 'login'  # URL для перенаправления на страницу входа
 LOGIN_REDIRECT_URL = 'chat_view'  # URL для перенаправления после входа
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # SMTP сервер для Gmail
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'ai.chat.bot228@gmail.com'  # Ваш email
+EMAIL_HOST_PASSWORD = 'muao oscw vxql pzbv'  # Ваш пароль приложения
+

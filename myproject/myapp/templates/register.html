@@ -42,12 +42,9 @@
     </div>
 
     <script>
-        // Функция для переключения темы
         function toggleTheme() {
             document.body.classList.toggle('dark-theme');
             const themeIcon = document.getElementById('theme-icon');
-            
-            // Сохранение темы в localStorage
             if (document.body.classList.contains('dark-theme')) {
                 themeIcon.textContent = '☀️'; // Иконка для светлой темы
                 localStorage.setItem('theme', 'dark');
@@ -57,7 +54,6 @@
             }
         }
 
-        // Проверка сохраненной темы при загрузке страницы
         window.onload = function() {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'dark') {
@@ -66,8 +62,6 @@
             } else {
                 document.getElementById('theme-icon').textContent = '🌙'; // Иконка для темной темы
             }
-
-            // Добавление обработчика события для кнопки переключения темы
             const themeToggle = document.getElementById('theme-toggle');
             if (themeToggle) {
                 themeToggle.addEventListener('click', toggleTheme);

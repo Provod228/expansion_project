@@ -1,9 +1,16 @@
+:root {
+    --background-color: #f0f0f0; /* Светлый фон */
+    --text-color: #333; /* Темный текст */
+}
+
 /* Общие стили */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    transition: background-color 0.3s, color 0.3s; /* Плавный переход */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Плавный переход */
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
 /* Светлая тема */
@@ -18,8 +25,10 @@ body {
 
 /* Темная тема */
 .dark-theme {
-    background-color: #000000; /* Черный фон */
+    background-color: #121212; /* Темный фон */
     color: #ffffff; /* Светлый текст */
+    --background-color: #121212; /* Темный фон */
+    --text-color: #ffffff; /* Светлый текст */
 }
 
 .dark-theme .container {
