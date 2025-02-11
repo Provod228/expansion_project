@@ -9,4 +9,5 @@ urlpatterns = [
     path('messages/', MessageCreateView.as_view(), name='message_create'),
     path('activate/<uidb64>/<token>/', activate_account, name='activate'),
     path('activation/success/', activation_success_view, name='activation_success'),
+    path('accounts/', include('allauth.urls')),
 ]

@@ -41,6 +41,11 @@ INSTALLED_APPS = [
     'myapp',
     'corsheaders',
     'rest_framework',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -146,3 +152,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'ai.chat.bot228@gmail.com'  # Ваш email
 EMAIL_HOST_PASSWORD = 'muao oscw vxql pzbv'  # Ваш пароль приложения
 
+SITE_ID = 1
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"

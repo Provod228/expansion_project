@@ -1,3 +1,5 @@
+{% load socialaccount %}  <!-- Загрузка тегов allauth -->
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -30,6 +32,9 @@
             </div>
             <button type="submit">Войти</button>
         </form>
+        <div class="social-auth">
+            <a href="{% provider_login_url 'google' %}" class="btn btn-google">Войти через Google</a>
+        </div>
         <p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p> <!-- Кнопка для регистрации -->
     </div>
 
