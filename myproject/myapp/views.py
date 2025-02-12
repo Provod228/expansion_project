@@ -122,7 +122,7 @@ class MessageCreateView(generics.CreateAPIView):
     def get_ai_response(self, user_message):
         client = OpenAI(
             base_url="https://openrouter.ai/api/v1",
-            api_key="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",  # Ваш токен
+            api_key="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",  # Ваш токен
         )
 
         completion = client.chat.completions.create(

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-z2mw!_+&7c81a-90b=1sx9)(7b-*=qx_u0i*61c^_f!fyequm7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -156,3 +156,5 @@ SITE_ID = 1
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
