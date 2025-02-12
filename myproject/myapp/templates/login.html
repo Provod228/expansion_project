@@ -32,9 +32,12 @@
             </div>
             <button type="submit">Войти</button>
         </form>
-        <div class="social-auth">
-            <a href="{% provider_login_url 'google' %}" class="btn btn-google">Войти через Google</a>
-        </div>
+        <form method="post" action="{% url 'google_login' %}" id="google-login-form">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-google" style="border: none; background: none; padding: 0;">
+                <img src="{% static 'images/google_icon.png' %}" alt="Войти через Google" style="width: 70px; height: 50px;">
+            </button>
+        </form>
         <p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p> <!-- Кнопка для регистрации -->
     </div>
 
