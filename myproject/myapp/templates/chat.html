@@ -11,12 +11,16 @@
 <body>
     <div class="chat-container">
         <div class="header">
-            <button class="auth-button" id="logout-button" style="display: {% if user.is_authenticated %} inline {% else %} none {% endif %};">
-                Выйти
-            </button>
-            <button class="auth-button" id="login-button" style="display: {% if user.is_authenticated %} none {% else %} inline {% endif %};">
-                Войти
-            </button>
+            {% if not user.is_authenticated %}
+                <button class="auth-button" id="google-login-button">
+                    Войти через Google
+                </button>
+            {% else %}
+                <form id="logout-form" method="POST" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="auth-button" id="logout-button">Выйти</button>
+                </form>
+            {% endif %}
             <h1>Chat with AI</h1>
             <button id="theme-toggle" class="theme-toggle-button" style="margin-left: 10px;">
                 <span id="theme-icon" class="icon">🌙</span>
@@ -60,25 +64,6 @@
     </div>
 
     <script>
-        // Обработчик для кнопки выхода
-        document.getElementById('logout-button').addEventListener('click', function() {
-            fetch('{% url "logout" %}', {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}'
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Перезагрузить страницу или обновить интерфейс
-                    location.reload();
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка:', error);
-            });
-        });
-
         // Функция для переключения темы
         function toggleTheme() {
             document.body.classList.toggle('dark-theme');
@@ -111,8 +96,46 @@
             }
         };
 
-        document.getElementById('send-button').addEventListener('click', sendMessage);
-        document.getElementById('user-input').addEventListener('keypress', (event) => {
+        document.getElementById('google-login-button').addEventListener('click', function() {
+            if (window.chrome && chrome.runtime && chrome.runtime.id) {
+                // Если открыто в расширении
+                window.parent.postMessage({ type: 'openGoogleLogin' }, '*');
+            } else {
+                // Если открыто в обычном браузере
+                window.open('{% url "google_login" %}', '_blank');
+            }
+        });
+
+        // Обработчик формы выхода
+        document.getElementById('logout-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            fetch('{% url "logout" %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '{% url "chat_view" %}';  // Перенаправляем на chat.html
+                } else {
+                    throw new Error('Ошибка выхода');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка при выходе из системы');
+            });
+        });
+
+        // Обработчик отправки сообщений
+        document.getElementById('send-button').addEventListener('click', function() {
+            sendMessage();
+        });
+
+        document.getElementById('user-input').addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
                 sendMessage();
             }
@@ -124,42 +147,50 @@
             const alertMessage = document.getElementById('alert-message');
             const chatId = '{{ chat.id }}';
 
-            const isAuthenticated = {{ user.is_authenticated|lower }};
-            if (!isAuthenticated) {
-                alertMessage.textContent = "Вы должны войти в систему, чтобы отправить сообщение.";
-                alertMessage.style.display = 'block';
-                return;
-            }
-
-            alertMessage.style.display = 'none';
-
-            if (userInput === '') {
+            if (!userInput) {
                 alertMessage.textContent = 'Пожалуйста, введите сообщение.';
                 alertMessage.style.display = 'block';
                 return;
             }
 
-            chatBox.innerHTML += `<div class="message-container user"><div class="message">Вы: ${userInput}</div></div>`;
+            // Добавляем сообщение пользователя в чат
+            chatBox.innerHTML += `
+                <div class="message-container user">
+                    <div class="message">Вы: ${userInput}</div>
+                </div>
+            `;
+            
             document.getElementById('user-input').value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
 
-            fetch('/messages/', {
+            // Отправляем сообщение на сервер
+            fetch('{% url "message_create" %}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': '{{ csrf_token }}'
                 },
-                body: JSON.stringify({ 
+                body: JSON.stringify({
                     user_message: userInput,
                     chat_id: chatId
                 })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
             .then(data => {
-                chatBox.innerHTML += `<div class="message-container ai"><div class="message">AI: ${data.ai_response}</div></div>`;
+                chatBox.innerHTML += `
+                    <div class="message-container ai">
+                        <div class="message">AI: ${data.ai_response}</div>
+                    </div>
+                `;
                 chatBox.scrollTop = chatBox.scrollHeight;
             })
             .catch(error => {
                 console.error('Error:', error);
+                alertMessage.textContent = 'Ошибка отправки сообщения';
+                alertMessage.style.display = 'block';
             });
         }
 
@@ -170,10 +201,6 @@
             } else {
                 historyContainer.style.display = 'none';
             }
-        });
-
-        document.getElementById('login-button').addEventListener('click', function() {
-            window.location.href = "{% url 'login' %}";  // Перенаправление на страницу входа
         });
     </script>
 </body>
