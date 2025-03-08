@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with AI</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Высота на весь экран */
+            width: 500px; /* Увеличенная ширина боковой панели */
+            background-color: #f4f4f4;
+            overflow: hidden; /* Скрыть прокрутку */
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .chat-box {
+            flex: 1; /* Занимает оставшееся пространство */
+            padding: 10px;
+            overflow-y: auto; /* Прокрутка, если сообщений много */
+            border-bottom: 1px solid #ccc;
+        }
+        .input-container {
+            display: flex;
+            padding: 10px;
+        }
+        input[type="text"] {
+            flex: 1; /* Занимает оставшееся пространство */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">Chat with AI</div>
+    <div class="chat-box" id="chat-box">
+        <!-- Сообщения будут отображаться здесь -->
+    </div>
+    <div class="input-container">
+        <input type="text" id="user-input" placeholder="Type a message..." />
+        <button id="send-button">Send</button>
+    </div>
+    <script>
+        document.getElementById('send-button').addEventListener('click', () => {
+            const userInput = document.getElementById('user-input').value;
+            const chatBox = document.getElementById('chat-box');
+
+            // Отображение сообщения пользователя
+            chatBox.innerHTML += `<div>User: ${userInput}</div>`;
+            document.getElementById('user-input').value = ''; // Очистка поля ввода
+
+            // Здесь добавьте логику для отправки сообщения на сервер и получения ответа
+        });
+    </script>
+</body>
+</html>

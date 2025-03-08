@@ -1,0 +1,127 @@
+:root {
+    --background-color: #f0f0f0; /* Светлый фон */
+    --text-color: #333; /* Темный текст */
+}
+
+.dark-theme {
+    --background-color: #121212; /* Темный фон */
+    --text-color: #ffffff; /* Светлый текст */
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Плавный переход */
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Светлая тема */
+body {
+    background-color: #f0f0f0; /* Светлый фон */
+    color: #333; /* Темный текст */
+}
+
+.container {
+    padding: 20px;
+}
+
+/* Темная тема */
+.dark-theme {
+    background-color: #121212; /* Темный фон */
+    color: #ffffff; /* Светлый текст */
+}
+
+.dark-theme .container {
+    background-color: #1e1e1e; /* Темный фон для контейнера */
+}
+
+.register-container {
+    padding: 20px;
+    max-width: 400px;
+    margin: auto;
+    background-color: #ffffff; /* Белый фон для контейнера */
+    border-radius: 8px; /* Закругленные углы */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень */
+}
+
+/* Темная тема для контейнера регистрации */
+.dark-theme .register-container {
+    background-color: #121212; /* Темный фон для контейнера */
+}
+
+/* Стили для заголовка */
+h1 {
+    margin-bottom: 20px;
+    color: #333; /* Цвет заголовка */
+}
+
+.dark-theme h1 {
+    color: #ffffff; /* Цвет заголовка в темной теме */
+}
+
+/* Стили для кнопок */
+button {
+    background-color: #5facfa; /* Синий фон */
+    color: white; /* Белый текст */
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px; /* Закругленные углы */
+    transition: background-color 0.3s; /* Плавный переход */
+}
+
+button:hover {
+    background-color: #afcff1; /* Темный синий при наведении */
+}
+
+/* Темная тема для кнопок */
+.dark-theme button {
+    background-color: #003d7a; /* Ярко-синий фон для кнопок в темной теме */
+    color: #ffffff; /* Белый текст */
+}
+
+.dark-theme button:hover {
+    background-color: #022645; /* Темный синий при наведении в темной теме */
+}
+
+/* Стили для сообщений об ошибках */
+.error-message {
+    color: red;
+}
+
+/* Стили для текстового поля */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc; /* Светлая тема */
+    border-radius: 5px;
+    margin-bottom: 10px; /* Отступ снизу */
+}
+
+/* Темная тема для текстового поля */
+.dark-theme input[type="text"],
+.dark-theme input[type="email"],
+.dark-theme input[type="password"] {
+    background-color: #333; /* Темный фон для текстового поля */
+    color: #ffffff; /* Светлый текст */
+    border: 1px solid #555; /* Темная граница */
+}
+
+/* Стили для кнопки переключения темы */
+.theme-toggle-button {
+    background-color: transparent; /* Прозрачный фон */
+    border: none; /* Без границы */
+    cursor: pointer; /* Курсор в виде указателя */
+    font-size: 20px; /* Размер иконки */
+    padding: 5px; /* Отступы */
+}
+
+/* Иконки */
+.icon {
+    display: inline-block;
+    transition: transform 0.3s; /* Плавный переход для иконок */
+}

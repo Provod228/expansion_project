@@ -1,0 +1,429 @@
+/* Общие стили */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Плавный переход */
+    background-color: #f0f0f0; /* Светлый фон */
+    color: #333; /* Темный текст */
+}
+
+/* Светлая тема */
+body {
+    background-color: #f0f0f0; /* Светлый фон */
+    color: #333; /* Темный текст */
+}
+
+.container {
+    padding: 20px;
+}
+
+/* Темная тема */
+.dark-theme {
+    background-color: #121212; /* Темный фон */
+    color: #ffffff; /* Светлый текст */
+}
+
+.dark-theme .container {
+    background-color: #1e1e1e; /* Темный фон для контейнера */
+}
+
+.chat-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+    background-color: #ffffff; /* Белый фон для контейнера */
+    border-radius: 8px; /* Закругленные углы */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень */
+}
+
+.chat-box {
+    height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+/* Контейнер для сообщений */
+.message-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+/* Стили для сообщений AI */
+.message-container.ai .message {
+    background-color: #e0e0e0; /* Светло-серый фон для AI сообщений */
+    color: #000000; /* Темный текст */
+}
+
+/* Темная тема для сообщений AI */
+.dark-theme .message-container.ai .message {
+    background-color: #444; /* Более светлый фон для AI сообщений в темной теме */
+    color: #e0e0e0; /* Светлый текст */
+}
+
+/* Стили для сообщений пользователя */
+.message-container.user .message {
+    background-color: #5facfa; /* Синий фон для пользовательских сообщений */
+    color: #ffffff; /* Светлый текст */
+}
+
+/* Темная тема для сообщений пользователя */
+.dark-theme .message-container.user .message {
+    background-color: #003d7a; /* Более темный синий фон для пользовательских сообщений в темной теме */
+}
+
+/* Остальные стили */
+.message {
+    border-radius: 5px;
+    padding: 10px;
+    max-width: 70%; /* Максимальная ширина сообщения */
+    display: inline-block;
+}
+
+/* Стили для ответов AI */
+.ai {
+    justify-content: flex-start; /* AI сообщения слева */
+}
+
+/* Стили для ответов пользователя */
+.user {
+    justify-content: flex-end; /* Пользовательские сообщения справа */
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+}
+
+input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc; /* Светлая тема */
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+/* Стили для кнопок */
+button {
+    background-color: #5facfa; /* Синий фон */
+    color: white; /* Белый текст */
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px; /* Закругленные углы */
+    transition: background-color 0.3s; /* Плавный переход */
+}
+
+button:hover {
+    background-color: #afcff1; /* Темный синий при наведении */
+}
+
+/* Темная тема для кнопок */
+.dark-theme button {
+    background-color: #003d7a; /* Ярко-синий фон для кнопок в темной теме */
+    color: #ffffff; /* Белый текст */
+}
+
+.dark-theme button:hover {
+    background-color: #022645; /* Темный синий при наведении в темной теме */
+}
+
+/* Стили для сообщений об ошибках */
+.error-message {
+    color: red;
+}
+
+.alert {
+    color: red;
+    margin-top: 10px;
+}
+
+.auth-buttons {
+    position: absolute; /* Позиционирование кнопок */
+    top: 10px;
+    right: 10px;
+}
+
+.send-button {
+    background-color: #5facfa; /* Цвет кнопки отправки */
+    width: 50px; /* Ширина кнопки */
+    height: 50px; /* Высота кнопки */
+    border-radius: 50%; /* Круглая форма */
+    font-size: 20px; /* Размер шрифта */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between; /* Выравнивание заголовка и имени пользователя */
+    align-items: center; /* Центрирование по вертикали */
+}
+
+.user-name {
+    color: gray; /* Цвет имени пользователя */
+    margin-right: 10px; /* Отступ справа от имени пользователя */
+}
+
+.logout-button {
+    margin-left: 10px;
+    color: red;
+    text-decoration: none;
+}
+
+.login-button {
+    margin-left: 10px;
+    color: blue;
+    text-decoration: none;
+}
+
+#chat-container {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: white;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+    z-index: 1000;
+    overflow-y: auto; /* Прокрутка, если сообщений много */
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333; /* Цвет заголовка */
+}
+
+p {
+    margin-top: 15px; /* Отступ сверху для параграфа */
+}
+
+a {
+    color: #007bff; /* Цвет ссылки */
+    text-decoration: none; /* Убираем подчеркивание */
+}
+
+a:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+.dark-theme .chat-container {
+    background-color: #1e1e1e; /* Темный фон для контейнера */
+    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1); /* Легкая тень для темной темы */
+}
+
+/* Стили для заголовка */
+h1 {
+    color: #333; /* Цвет заголовка в светлой теме */
+}
+
+.dark-theme h1 {
+    color: #ffffff; /* Цвет заголовка в темной теме */
+}
+
+/* Стили для кнопки переключения темы */
+.theme-toggle-button {
+    background-color: transparent; /* Прозрачный фон */
+    border: none; /* Без границы */
+    cursor: pointer; /* Курсор в виде указателя */
+    font-size: 20px; /* Размер иконки */
+    padding: 5px; /* Отступы */
+}
+
+/* Иконки */
+.icon {
+    display: inline-block;
+    transition: transform 0.3s; /* Плавный переход для иконок */
+}
+
+/* Темная тема для сообщений */
+.dark-theme .message {
+    background-color: #2c2c2c; /* Темный фон для сообщений в темной теме */
+}
+
+/* Стили для текстового поля */
+input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc; /* Светлая тема */
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+/* Темная тема для текстового поля */
+.dark-theme input[type="text"] {
+    background-color: #333; /* Темный фон для текстового поля */
+    color: #ffffff; /* Светлый текст */
+    border: 1px solid #555; /* Темная граница */
+}
+
+/* Пример стилей для кнопок */
+.auth-button {
+    background-color: #007bff; /* Цвет фона */
+    color: white; /* Цвет текста */
+    border: none; /* Без границы */
+    padding: 10px 15px; /* Отступы */
+    border-radius: 5px; /* Закругленные углы */
+    cursor: pointer; /* Указатель при наведении */
+    font-size: 16px; /* Размер шрифта */
+}
+
+.auth-button:hover {
+    background-color: #0056b3; /* Цвет фона при наведении */
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between; /* Разделяет элементы по краям */
+    align-items: center; /* Выравнивание по вертикали */
+    margin-top: 10px; /* Отступ сверху */
+}
+
+#history-button {
+    margin-left: 10px; /* Отступ слева для кнопки */
+    margin-bottom: 10px; /* Отступ снизу для кнопки */
+}
+
+/* Добавляем стили для боковой панели */
+.sidebar {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 300px;
+    background-color: #f5f5f5;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.dark-theme .sidebar {
+    background-color: #1e1e1e;
+    box-shadow: -2px 0 5px rgba(255, 255, 255, 0.1);
+}
+
+.sidebar.active {
+    right: 0;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.dark-theme .sidebar-header {
+    border-bottom: 1px solid #333;
+}
+
+.close-sidebar {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+.dark-theme .close-sidebar {
+    color: #fff;
+}
+
+.chats-list {
+    padding: 15px;
+}
+
+.chat-item {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+}
+
+.dark-theme .chat-item {
+    background-color: #2c2c2c;
+}
+
+.chat-item:hover {
+    background-color: #e0e0e0;
+}
+
+.dark-theme .chat-item:hover {
+    background-color: #3c3c3c;
+}
+
+.chat-item.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.chat-actions {
+    display: none;
+}
+
+.chat-item:hover .chat-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.new-chat-button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.new-chat-button:hover {
+    background-color: #0056b3;
+}
+
+#toggle-sidebar {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.dark-theme #toggle-sidebar {
+    color: #fff;
+}
+
+/* Стиль для кнопки "Показать историю" */
+#history-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#history-button:hover {
+    background-color: #0056b3;
+}
+
+.dark-theme #history-button {
+    background-color: #0056b3;
+}
+
+.dark-theme #history-button:hover {
+    background-color: #003d80;
+}

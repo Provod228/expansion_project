@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>AI Chat</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #1a1a1a;
+            color: white;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        #error-message {
+            padding: 20px;
+            color: red;
+            text-align: center;
+            display: none;
+        }
+        #loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="error-message"></div>
+    <div id="loading">Подключение к серверу...</div>
+    <iframe 
+        id="chatFrame"
+        src="http://127.0.0.1:8000/chat/" 
+        allow="same-origin; scripts; forms; modals; popups"
+        style="display: none;"
+    ></iframe>
+    <script src="sidepanel.js"></script>
+</body>
+</html> 

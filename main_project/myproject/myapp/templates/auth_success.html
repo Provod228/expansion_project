@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Успешная авторизация</title>
+    <script>
+        window.onload = function() {
+            try {
+                // Устанавливаем флаг авторизации в localStorage
+                localStorage.setItem('auth_success_timestamp', Date.now());
+                
+                // Отправляем сообщение всем открытым вкладкам
+                localStorage.setItem('refresh_chat_trigger', Date.now());
+                
+                
+                // Показываем обратный отсчет
+                let seconds = 3;
+                const countdownElement = document.getElementById('countdown');
+                
+                const timer = setInterval(() => {
+                    seconds--;
+                    if (countdownElement) {
+                        countdownElement.textContent = seconds;
+                    }
+                    
+                    if (seconds <= 0) {
+                        clearInterval(timer);
+                        window.close();
+                    }
+                }, 1000);
+
+                // Гарантированное закрытие вкладки через 3 секунды
+                setTimeout(() => {
+                    window.close();
+                }, 3000);
+
+            } catch (error) {
+                console.error('Error in auth success:', error);
+                setTimeout(() => {
+                    window.close();
+                }, 3000);
+            }
+        }
+    </script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .success-message {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .success-message h2 {
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+        .success-message p {
+            color: #666;
+            margin: 0;
+        }
+        .countdown {
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-message">
+        <h2>Авторизация успешна!</h2>
+        <p>Окно закроется через <span id="countdown" class="countdown">3</span> секунды...</p>
+    </div>
+</body>
+</html> 
